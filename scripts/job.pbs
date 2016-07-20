@@ -1,0 +1,18 @@
+#!/bin/bash -l
+# Example Batch Submission script for SLURM
+# To run this script, run :
+# sbatch job.pbs
+
+#SBATCH -p debug
+#SBATCH -n 512
+#SBATCH -o %j.out
+#SBATCH -e %j.err
+#SBATCH --qos=normal
+#SBATCH -t 00:30:00
+#SBATCH -J flash
+#SBATCH -L SCRATCH
+
+# Change into the FLASH4.3/object/ directory  (Replace this with your own directory path)
+cd /global/project/projectdirs/astro250/dlee/FLASH4.3/object/
+# Run the simulation on 512 cores 
+srun -n 512 ./flash4

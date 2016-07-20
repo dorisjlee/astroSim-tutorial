@@ -1,0 +1,74 @@
+# Runtime Parameter
+fattening_factor = 100.
+beta_param = 0.01
+gamma           = 1.001 
+
+# Computational volume parameters
+geometry = cartesian
+xmin		= 0.
+xmax		= 1e19 
+ymin		= 0.
+ymax		= 1e19
+zmin		= 0.
+zmax		= 1e19
+
+# Boundary conditions
+xl_boundary_type = "outflow"
+xr_boundary_type = "outflow"
+yl_boundary_type = "outflow"
+yr_boundary_type = "outflow"
+
+# Sink Particles Parameters
+useParticle = .true.
+sink_merging = .true.
+useSinkParticles = .true.
+sink_density_thresh = 2.54794669312e-19 
+sink_accretion_radius = 1.953125e+17
+sink_softening_radius = 1.953125e+17
+
+# Simulation (grid, time, I/O) parameters
+cfl		= 0.3
+basenm          = "sod_"
+restart         = .false.
+
+checkpointFileIntervalTime = 1.e10
+checkpointFileIntervalStep = 0
+checkpointFileNumber = 0 
+
+plotfileIntervalTime = 1.e10
+plotfileIntervalStep = 0
+plotfileNumber = 0
+
+particleFileIntervalTime = 1.e10
+particleFileIntervalStep = 0
+particleFileNumber = 0 
+
+
+nend            = 1E6
+tmax            = 5.0e13
+dtinit          = 1.0E3
+dtmax           = 1.0E10
+
+run_comment     = "Collapsing Sphere problem"
+log_file        = "sphere.log"
+eintSwitch     = 1.e-4
+
+
+plot_var_1 = "dens"
+plot_var_2 = "pres"
+plot_var_3 = "temp"
+
+#    AMR refinement parameters  
+lrefine_min     = 5  
+lrefine_max     = 7   
+#refine_var_1    = "dens"
+refineOnJeansLength=.true.
+jeans_ncells_ref = 32.0
+jeans_ncells_deref = 64.0
+
+# Number of processors in each direction 
+iProcs = 3  
+jProcs = 4
+kProcs = 4
+
+RiemannSolver	= "HLLC"       # Roe, HLL, HLLC, LLF, Marquina
