@@ -8,5 +8,6 @@ Jupyter Notebooks on how to run astrophysical simulations in FLASH
 	- 3.1-Lane Emden Numerical Solution
 	- 3.2-Rotation              
 - 4-Running the Simulation.ipynb
-- 5-Sink Particles 
-- 6-Magnetohydrodynamics
+- 5-Data Analysis and visualization with yt
+- 6-Sink Particles 
+- 7-Magnetohydrodynamics
