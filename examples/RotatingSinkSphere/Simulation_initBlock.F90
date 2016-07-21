@@ -4,7 +4,7 @@ subroutine Simulation_initBlock(blockID)
 #include "Flash.h"
 #include "Eos.h"
 
-  use Simulation_data, ONLY:   sim_smallX, sim_gamma, sim_smallP,fattening_factor,beta_param
+  use Simulation_data, ONLY:   sim_smallX, sim_gamma, sim_smallP,fattening_factor,beta_param,xmin,xmax
   use Grid_interface, ONLY : Grid_getBlkIndexLimits, &
     Grid_getCellCoords, Grid_putPointData
   use Eos_interface, ONLY : Eos, Eos_wrapped
@@ -31,8 +31,8 @@ subroutine Simulation_initBlock(blockID)
   real :: rhoZone, velxZone, velyZone, velzZone, presZone, & 
        eintZone, enerZone, ekinZone, gameZone, gamcZone
   
-  real rmax, rho_c,xl,xr,xc,yl,yr,yc,zr,zl,zc,rr,dr,rc,rho0,rho1,rc0,rc1,rho_out,P_out,rho_min,center
-  real vx,vy,vz,phi,theta,omega,xmax,xmin
+  real rmax, rho_c,xl,xr,xc,yl,yr,yc,zr,zl,zc,rr,dr,rc,rho0,rho1,rc0,rc1,rho_out,P_out,rho_edge,center
+  real vx,vy,vz,phi,theta,omega
   real, dimension(3000,1) :: dens_arr
   
   logical :: gcell = .true.
@@ -65,7 +65,7 @@ subroutine Simulation_initBlock(blockID)
   call Grid_getCellCoords(IAXIS, blockId, RIGHT_EDGE, gcell, xRight, sizeX)
 
   !Read in data from Lane Emden Numerical Integration result
-  ! reading file from the location ./flash4 starts up which in our case is  /global/project/projectdirs/astro250/doris/FLASH4.3/object
+  ! reading file from the location ./flash4 starts up which in our case is  FLASH4.3/object
   open(12,file="../density.txt")
   read(12,*,IOSTAT=io) dens_arr
   close(12)
@@ -73,11 +73,12 @@ subroutine Simulation_initBlock(blockID)
   rho_c = 1.1E-19 
   rmax=16.90 !dimensionless xi units 
   dr=0.01 !delta xi used to initialize np.arange for the numerical integration
-  rho_min =  rho_c*dens_arr(int(rmax*100),1)
-  center = abs(xmin-xmax)/2. 
-  rho_out =0.5E-22
-  P_out = fattening_factor*rho_min*8.254E8
-  !print *,"beta:",beta_param
+  rho_edge =  rho_c*dens_arr(int(rmax*100),1)
+!  print *,"rho_edge: ", rho_edge
+  center = abs(xmin-xmax)/2.
+  rho_out = 1e6*rho_edge
+  P_out = fattening_factor*rho_edge*8.254E8
+!  print *,"P_out:",P_out
   omega = sqrt(2.2196e-25*beta_param) !Computed from 3*G*M/(rmax/1.057e-17)**3
   do k = blkLimits(LOW,KAXIS),blkLimits(HIGH,KAXIS)
      ! get the coordinates of the cell center in the z-direction
@@ -100,7 +101,7 @@ subroutine Simulation_initBlock(blockID)
                rc1 = rc0+dr
                rhoZone = fattening_factor*(rho0+(rho1-rho0)*(rc-rc0)/(rc1-rc0) )!linear interpolation
            else
-               rhoZone =  fattening_factor*rho_out!7.9856E-27 !rho_min*10^-6
+               rhoZone =  fattening_factor*rho_out!7.9856E-27 !rho_edge*10^-6
            endif
            velxZone = abs(omega*rr*sin(phi))
            velyZone = abs(omega*rr*cos(phi))

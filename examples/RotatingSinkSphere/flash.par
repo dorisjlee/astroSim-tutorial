@@ -28,7 +28,7 @@ sink_softening_radius = 1.953125e+17
 
 # Simulation (grid, time, I/O) parameters
 cfl		= 0.3
-basenm          = "sod_"
+basenm          = "sphere_"
 restart         = .false.
 
 checkpointFileIntervalTime = 1.e10
