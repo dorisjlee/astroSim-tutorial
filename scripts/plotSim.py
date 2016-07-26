@@ -17,6 +17,7 @@ def plot_dens(i,fname="sphere",plane="z", velocity=False,grid=False,zmin ="",zma
     physical_quantity="density"
     slc = yt.SlicePlot(ds, plane,physical_quantity)#,center=(0.5,0.5,0.5))
     slc.set_figure_size(5)
+    slc.annotate_text((0.05, 0.02),"Time: {} Myr".format(round(ds.current_time.in_cgs().in_units('Myr'),3)), coord_system='axis')
     if zoom!="": slc.zoom(zoom)
     if grid: slc.annotate_grids()
     if velocity: slc.annotate_velocity(normalize=True)
