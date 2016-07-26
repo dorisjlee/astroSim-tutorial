@@ -4,7 +4,7 @@ subroutine Simulation_initBlock(blockID)
 #include "Flash.h"
 #include "Eos.h"
 
-  use Simulation_data, ONLY:   sim_smallX, sim_gamma, sim_smallP,fattening_factor,beta_param,xmin,xmax
+  use Simulation_data, ONLY:   sim_smallX, sim_gamma, sim_smallP,fattening_factor,xmin,xmax
   use Grid_interface, ONLY : Grid_getBlkIndexLimits, &
     Grid_getCellCoords, Grid_putPointData
   use Eos_interface, ONLY : Eos, Eos_wrapped
@@ -32,7 +32,6 @@ subroutine Simulation_initBlock(blockID)
        eintZone, enerZone, ekinZone, gameZone, gamcZone
   
   real rmax, rho_c,xl,xr,xc,yl,yr,yc,zr,zl,zc,rr,dr,rc,rho0,rho1,rc0,rc1,rho_out,P_out,rho_edge,center
-  real vx,vy,vz,phi,theta,omega
   real, dimension(3000,1) :: dens_arr
   
   logical :: gcell = .true.
@@ -74,12 +73,9 @@ subroutine Simulation_initBlock(blockID)
   rmax=16.90 !dimensionless xi units 
   dr=0.01 !delta xi used to initialize np.arange for the numerical integration
   rho_edge =  rho_c*dens_arr(int(rmax*100),1)
-  !print *,"rho_edge: ", rho_edge
   center = abs(xmin-xmax)/2.
   rho_out = rho_edge/150.
   P_out = fattening_factor*rho_edge*8.254E8
-!  print *,"P_out:",P_out
-  omega = sqrt(2.2196e-25*beta_param) !Computed from 3*G*M/(rmax/1.057e-17)**3
   do k = blkLimits(LOW,KAXIS),blkLimits(HIGH,KAXIS)
      ! get the coordinates of the cell center in the z-direction
      zz = zCoord(k)-center
@@ -90,8 +86,6 @@ subroutine Simulation_initBlock(blockID)
            ! get the cell center, left, and right positions in x
            xx  = xCenter(i)-center
            rr = sqrt(xx**2 + yy**2 + zz**2)
-           phi =  atan(yy/xx)
-  !         print *, phi
            rc=rr*1.057E-17
            if (rc <= rmax) then
                rc0 = int(rc/dr)+1 !to prevent from hitting index 0 which is yields zero density
@@ -103,29 +97,9 @@ subroutine Simulation_initBlock(blockID)
            else
                rhoZone =  fattening_factor*rho_out!7.9856E-27 !rho_edge*10^-6
            endif
-           velxZone = abs(omega*rr*sin(phi))
-           velyZone = abs(omega*rr*cos(phi))
+           velxZone = 0.0
+           velyZone = 0.0
 
-           if (xx<0) then
-               velyZone=-velyZone
-           endif
-           if (yy>0) then
-               velxZone=-velxZone
-           endif
-!           print *,xx,yy,phi,velxZone,velyZone
-           if (rc >=18.719) then
-               !velxZone = velxZone*exp(-((rc-18.719)/9.35)**2)
-               !velyZone = velyZone*exp(-((rc-18.719)/9.35)**2)
-               velxZone = velxZone*exp(-(rc-18.719)/9.35)
-               velyZone = velyZone*exp(-(rc-18.719)/9.35)
-           endif
-           !if (velxZone <= 1.E-18) then 
-           !   velxZone = 0 
-           !endif 
-
-           velzZone = 0.0
-           !print *,omega
- !          print *,"vy: ",velyZone
            !Pressure 
            IF (rc .LE. rmax) THEN     
                 presZone=rhoZone*8.254E8  !ideal gas law (T=10K inside)

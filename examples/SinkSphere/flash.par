@@ -1,6 +1,5 @@
 # Runtime Parameter
 fattening_factor = 100.
-beta_param = 0.01
 gamma           = 1.001 
 
 # Computational volume parameters
@@ -66,8 +65,8 @@ jeans_ncells_ref = 32.0
 jeans_ncells_deref = 64.0
 
 # Number of processors in each direction 
-iProcs =8 
-jProcs =8
-kProcs =8
+iProcs =3  
+jProcs =4
+kProcs =4
 
 RiemannSolver	= "HLLC"       # Roe, HLL, HLLC, LLF, Marquina
