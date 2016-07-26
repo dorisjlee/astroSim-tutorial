@@ -14,7 +14,7 @@ import os
 # python clean_sinks_evol.py
 os.chdir("../object")
 SAVE_PATH = "/global/homes/d/dorislee/StarFormationCode/FLASH/"
-def plot_dens(i,fname="sod",plane="z", velocity=False,grid=False,zmin ="",zmax="",magnetic=False, particle=False,zoom=""):
+def plot_dens(i,fname="sphere",plane="z", velocity=False,grid=False,zmin ="",zmax="",magnetic=False, particle=False,zoom=""):
     ds = yt.load("{0}_hdf5_chk_{1}".format(fname,str(i).zfill(4)))
     physical_quantity="density"
     slc = yt.SlicePlot(ds, plane,physical_quantity)#,center=(0.5,0.5,0.5))
@@ -46,7 +46,7 @@ def plot_var(i,physical_quantity,fname="sod",cut="z",velocity=False,grid=False,z
     #slc.show()
     slc.save(SAVE_PATH+"{0}_{1}.png".format(ds,physical_quantity))
 
-def all_direction_slices(i,fname="sod",physical_quantity="density",zmin="",zmax="",zoom=""):
+def all_direction_slices(i,fname="sphere",physical_quantity="density",zmin="",zmax="",zoom=""):
     from mpl_toolkits.axes_grid1 import AxesGrid
     ds = yt.load("{0}_hdf5_chk_{1}".format(fname,str(i).zfill(4)))
     fig = plt.figure()
