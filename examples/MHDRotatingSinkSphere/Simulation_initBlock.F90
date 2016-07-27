@@ -4,7 +4,7 @@ subroutine Simulation_initBlock(blockID)
 #include "Flash.h"
 #include "Eos.h"
 
-  use Simulation_data, ONLY:   sim_smallX, sim_gamma, sim_smallP,fattening_factor,beta_param,xmin,xmax
+  use Simulation_data, ONLY:   sim_smallX, sim_gamma, sim_smallP,fattening_factor,beta_param,xmin,xmax,alpha
   use Grid_interface, ONLY : Grid_getBlkIndexLimits, &
     Grid_getCellCoords, Grid_putPointData
   use Eos_interface, ONLY : Eos, Eos_wrapped
@@ -31,7 +31,7 @@ subroutine Simulation_initBlock(blockID)
   real :: rhoZone, velxZone, velyZone, velzZone, presZone, & 
        eintZone, enerZone, ekinZone, gameZone, gamcZone
   
-  real rmax, rho_c,xl,xr,xc,yl,yr,yc,zr,zl,zc,rr,dr,rc,rho0,rho1,rc0,rc1,rho_out,P_out,rho_edge,center
+  real rmax, rho_c,xl,xr,xc,yl,yr,yc,zr,zl,zc,rr,dr,rc,rho0,rho1,rc0,rc1,rho_out,P_out,rho_edge,center,Bz
   real vx,vy,vz,phi,theta,omega
   real, dimension(3000,1) :: dens_arr
   
@@ -112,6 +112,7 @@ subroutine Simulation_initBlock(blockID)
            if (yy>0) then
                velxZone=-velxZone
            endif
+!           print *,xx,yy,phi,velxZone,velyZone
            if (rc >=18.719) then
                velxZone = velxZone*exp(-(rc-18.719)/9.35)
                velyZone = velyZone*exp(-(rc-18.719)/9.35)
@@ -137,6 +138,11 @@ subroutine Simulation_initBlock(blockID)
            enerZone = eintZone + ekinZone
            enerZone = max(enerZone, sim_smallP)
 
+           ! MHD
+           Bz = sqrt(25.132*presZone/alpha)
+           call Grid_putPointData(blockId, CENTER, MAGX_VAR, EXTERIOR, axis, 0.0)
+           call Grid_putPointData(blockId, CENTER, MAGY_VAR, EXTERIOR, axis, 0.0)
+           call Grid_putPointData(blockId, CENTER, MAGZ_VAR, EXTERIOR, axis, Bz)
            ! store the variables in the current zone via Grid put methods
            ! data is put stored one cell at a time with these calls to Grid_putData           
            call Grid_putPointData(blockId, CENTER, DENS_VAR, EXTERIOR, axis, rhoZone)

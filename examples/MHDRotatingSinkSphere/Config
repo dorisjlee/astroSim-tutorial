@@ -1,0 +1,26 @@
+REQUIRES Driver
+REQUIRES physics/Hydro
+REQUIRES physics/Gravity/GravityMain/Poisson
+REQUIRES physics/Eos
+REQUIRES Grid
+REQUIRES Particles/ParticlesMain/active/Sink
+REQUESTS physics/Hydro/HydroMain/split/MHD_8Wave
+
+PARAMETER fattening_factor REAL 100.
+
+PARAMETER beta_param REAL 1.
+
+D   tiny            Threshold value used for numerical zero
+PARAMETER tiny         REAL     1.e-30
+
+D  smallt
+PARAMETER smallt      REAL 1.e-30
+
+D  smallp
+PARAMETER smallp      REAL 1.e-30
+
+D  smalle 
+PARAMETER smalle      REAL 1.e-30
+
+D  smlrho
+PARAMETER smlrho      REAL 1.e-30
