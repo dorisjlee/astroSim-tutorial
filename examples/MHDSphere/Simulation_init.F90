@@ -23,10 +23,10 @@ subroutine Simulation_init()
   call RuntimeParameters_get('smallx', sim_smallX) 
   call RuntimeParameters_get('fattening_factor',fattening_factor) 
   call RuntimeParameters_get('beta_param',beta_param)
+  call RuntimeParameters_get('alpha',alpha) 
   call RuntimeParameters_get('gamma', sim_gamma)
   call RuntimeParameters_get('xmax',xmax)
   call RuntimeParameters_get('xmin',xmin)
-  call RuntimeParameters_get('alpha',alpha) ! thermal-to-magnetic pressure ratio
   call Logfile_stamp( "initializing  Sphere problem","[Simulation_init]")
 
 end subroutine Simulation_init

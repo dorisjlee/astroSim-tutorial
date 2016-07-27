@@ -1,9 +1,9 @@
 module Simulation_data
-use Particles_sinkData
-use pt_sinkInterface, only: pt_sinkCreateParticle, pt_sinkGatherGlobal
+!use Particles_sinkData
+!use pt_sinkInterface, only: pt_sinkCreateParticle, pt_sinkGatherGlobal
 #include "constants.h"
 #include "Flash.h"
-#include "Particles.h"
+!#include "Particles.h"
   implicit none
   integer,save  :: sim_globalMe
   real, save :: fattening_factor,beta_param,xmin,xmax,alpha

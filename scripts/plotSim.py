@@ -12,7 +12,7 @@ import os
 # Particle Clean File  
 # cp ../source/Simulation/SimulationMain/unitTest/SinkMomTest/utils/clean_flashdat.py . 
 # python clean_sinks_evol.py
-def plot_dens(i,fname="sphere",cut="z", velocity=False,grid=False,zmin ="",zmax="",magnetic=False, particle=False,zoom="", save_path=""):
+def plot_dens(i,fname="sphere",cut="z", velocity=False,grid=False,zmin ="",zmax="",magnetic=False, particle=False,zoom="", save_path="",scale=False):
     ds = yt.load("{0}_hdf5_chk_{1}".format(fname,str(i).zfill(4)))
     physical_quantity="density"
     slc = yt.SlicePlot(ds,cut,physical_quantity)#,center=(0.5,0.5,0.5))
@@ -20,9 +20,18 @@ def plot_dens(i,fname="sphere",cut="z", velocity=False,grid=False,zmin ="",zmax=
     slc.annotate_text((0.05, 0.02),"Time: {} Myr".format(round(ds.current_time.in_cgs().in_units('Myr'),3)), coord_system='axis')
     if zoom!="": slc.zoom(zoom)
     if grid: slc.annotate_grids()
-    if velocity: slc.annotate_velocity(normalize=True)
-    if magnetic: slc.annotate_magnetic_field(normalize=True)
+    if cut == "x": 
+        if velocity:slc.annotate_streamlines('velocity_y', 'velocity_z',factor=100,plot_args={'color':'#000066'})    
+        if magnetic:slc.annotate_streamlines('magnetic_field_y', 'magnetic_field_z',factor=100,plot_args={'color':'orange'})
+    if cut == "y": 
+        if velocity:slc.annotate_streamlines('velocity_x', 'velocity_z',factor=100,plot_args={'color':'#000066'})    
+        if magnetic:slc.annotate_streamlines('magnetic_field_x', 'magnetic_field_z',factor=100,plot_args={'color':'orange'})
+    if cut == "z": 
+        if velocity:slc.annotate_streamlines('velocity_x', 'velocity_y',factor=100,plot_args={'color':'#000066'})    
+        if magnetic:slc.annotate_streamlines('magnetic_field_x', 'magnetic_field_y',factor=100,plot_args={'color':'orange'})
+
     slc.set_cmap("all","rainbow")
+    slc.annotate_scale(corner="upper_right",unit='pc',pos=(0.8,0.9),coord_system="figure")
     if zmin!="" and zmax!="": slc.set_zlim(physical_quantity,zmin,zmax)
     if particle : 
         #os.system("cp ../source/Simulation/SimulationMain/unitTest/SinkMomTest/utils/clean_sinks_evol.py .")
@@ -37,14 +46,23 @@ def plot_dens(i,fname="sphere",cut="z", velocity=False,grid=False,zmin ="",zmax=
         slc.save(save_path+"{0}_{1}.png".format(ds,physical_quantity))
     else:
 	slc.show()
-def plot_var(i,physical_quantity,fname="sphere",cut="z",magnetic=False,velocity=False,grid=False,zmin ="",zmax="",particle=False,save_path=""):
+def plot_var(i,physical_quantity,fname="sphere",cut="z",magnetic=False,velocity=False,grid=False,zmin ="",zmax="",particle=False,save_path="",scale=False):
     ds = yt.load("{0}_hdf5_chk_{1}".format(fname,str(i).zfill(4)))
     slc = yt.SlicePlot(ds, cut,physical_quantity)#,center=(0.5,0.5,0.5))
     slc.set_figure_size(5)
     if grid: slc.annotate_grids()
-    if velocity: slc.annotate_velocity(normalize=True)
-    if magnetic: slc.annotate_magnetic_field(normalize=True)
+    if cut == "x":
+        if velocity:slc.annotate_streamlines('velocity_y', 'velocity_z',factor=100,plot_args={'color':'#000066'})
+        if magnetic:slc.annotate_streamlines('magnetic_field_y', 'magnetic_field_z',factor=100,plot_args={'color':'orange'})
+    if cut == "y":
+        if velocity:slc.annotate_streamlines('velocity_x', 'velocity_z',factor=100,plot_args={'color':'#000066'})
+        if magnetic:slc.annotate_streamlines('magnetic_field_x', 'magnetic_field_z',factor=100,plot_args={'color':'orange'})
+    if cut == "z":
+        if velocity:slc.annotate_streamlines('velocity_x', 'velocity_y',factor=100,plot_args={'color':'#000066'})
+        if magnetic:slc.annotate_streamlines('magnetic_field_x', 'magnetic_field_y',factor=100,plot_args={'color':'orange'})
+
     slc.set_cmap("all","rainbow")
+    if scale: slc.annotate_scale(corner="upper_right",unit='pc',pos=(0.8,0.9),coord_system="figure")
     if zmin!="" and zmax!="": slc.set_zlim(physical_quantity,zmin,zmax)
     if save_path !="":
         slc.save(save_path+"{0}_{1}.png".format(ds,physical_quantity))
