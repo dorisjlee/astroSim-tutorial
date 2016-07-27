@@ -12,16 +12,16 @@ import os
 # Particle Clean File  
 # cp ../source/Simulation/SimulationMain/unitTest/SinkMomTest/utils/clean_flashdat.py . 
 # python clean_sinks_evol.py
-def plot_dens(i,fname="sphere",plane="z", velocity=False,grid=False,zmin ="",zmax="",magnetic=False, particle=False,zoom="", save_path=""):
+def plot_dens(i,fname="sphere",cut="z", velocity=False,grid=False,zmin ="",zmax="",magnetic=False, particle=False,zoom="", save_path=""):
     ds = yt.load("{0}_hdf5_chk_{1}".format(fname,str(i).zfill(4)))
     physical_quantity="density"
-    slc = yt.SlicePlot(ds, plane,physical_quantity)#,center=(0.5,0.5,0.5))
+    slc = yt.SlicePlot(ds,cut,physical_quantity)#,center=(0.5,0.5,0.5))
     slc.set_figure_size(5)
     slc.annotate_text((0.05, 0.02),"Time: {} Myr".format(round(ds.current_time.in_cgs().in_units('Myr'),3)), coord_system='axis')
     if zoom!="": slc.zoom(zoom)
     if grid: slc.annotate_grids()
     if velocity: slc.annotate_velocity(normalize=True)
-    if magnetic: slc.annotate_magnetic_field()
+    if magnetic: slc.annotate_magnetic_field(normalize=True)
     slc.set_cmap("all","rainbow")
     if zmin!="" and zmax!="": slc.set_zlim(physical_quantity,zmin,zmax)
     if particle : 
@@ -37,12 +37,13 @@ def plot_dens(i,fname="sphere",plane="z", velocity=False,grid=False,zmin ="",zma
         slc.save(save_path+"{0}_{1}.png".format(ds,physical_quantity))
     else:
 	slc.show()
-def plot_var(i,physical_quantity,fname="sphere",cut="z",velocity=False,grid=False,zmin ="",zmax="",particle=False,save_path=""):
+def plot_var(i,physical_quantity,fname="sphere",cut="z",magnetic=False,velocity=False,grid=False,zmin ="",zmax="",particle=False,save_path=""):
     ds = yt.load("{0}_hdf5_chk_{1}".format(fname,str(i).zfill(4)))
     slc = yt.SlicePlot(ds, cut,physical_quantity)#,center=(0.5,0.5,0.5))
     slc.set_figure_size(5)
     if grid: slc.annotate_grids()
-    if velocity: slc.annotate_velocity()
+    if velocity: slc.annotate_velocity(normalize=True)
+    if magnetic: slc.annotate_magnetic_field(normalize=True)
     slc.set_cmap("all","rainbow")
     if zmin!="" and zmax!="": slc.set_zlim(physical_quantity,zmin,zmax)
     if save_path !="":
