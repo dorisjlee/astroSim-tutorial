@@ -12,4 +12,3 @@ Jupyter Notebook tutorials on how to run astrophysical simulations in FLASH
 - [8-Rotation and Discs](http://nbviewer.jupyter.org/github/dorisjlee/astroSim-tutorial/blob/master/tutorial/8-Rotation%20and%20Discs.ipynb)
 - [9-Magnetohydrodynamics](http://nbviewer.jupyter.org/github/dorisjlee/astroSim-tutorial/blob/master/tutorial/9-Magnetohydrodynamics.ipynb)
 - [10-Tips and Tricks](http://nbviewer.jupyter.org/github/dorisjlee/astroSim-tutorial/blob/master/tutorial/10-Tips%and%Tricks)
-- [11-Parallel Runs](http://nbviewer.jupyter.org/github/dorisjlee/astroSim-tutorial/blob/master/tutorial/11-Parallel%Runs)
