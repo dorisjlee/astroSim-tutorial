@@ -28,7 +28,7 @@ The notebook links above are read-only, it is much cooler if you could actually 
 - Alternatively, if you already have Python and Jupyter notebook installed, you can run it locally: 
 
 ```
-pip install astroSim
+git clone git@github.com:dorisjlee/astroSim-tutorial.git
 cd astroSim/tutorial
 ipython notebook 
 ```
