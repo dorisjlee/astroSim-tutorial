@@ -3,7 +3,7 @@
 ------------------------------------------------
 
 [![Binder](http://mybinder.org/badge.svg)](http://mybinder.org:/repo/dorisjlee/astrosim-tutorial)
-[![DOI](https://zenodo.org/badge/23456/dorisjlee/astroSim-tutorial.svg)](https://zenodo.org/badge/latestdoi/23456/dorisjlee/astroSim-tutorial)
+[![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.59657.svg)](http://dx.doi.org/10.5281/zenodo.59657)
 
 Jupyter Notebook tutorials on how to run astrophysical simulations in FLASH. 
 
