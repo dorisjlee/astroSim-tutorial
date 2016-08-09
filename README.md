@@ -5,7 +5,7 @@
 [![Binder](http://mybinder.org/badge.svg)](http://mybinder.org:/repo/dorisjlee/astrosim-tutorial)
 [![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.59657.svg)](http://dx.doi.org/10.5281/zenodo.59657)
 
-Jupyter Notebook tutorials on how to run astrophysical simulations in FLASH through a classic example of the gravitational collapse of a magnetized, rotating sphere.
+Jupyter Notebook tutorials on how to run astrophysical simulations through a classic example of the gravitational collapse of a magnetized, rotating sphere.
 
 
 <center>
